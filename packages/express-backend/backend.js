@@ -48,13 +48,34 @@ const findUserByName = (name) => {
         .filter( (user) => user['name'] === name); 
 }
 
+const findUserByNameJob = (name, job) => {
+    return users['users_list']
+        .filter( (user) => user['job'] === job && user['name'] === name);
+}
+
 const findUserById = (id) =>
     users['users_list']
         .find( (user) => user['id'] === id);
 
+const addUser = (user) => {
+    users['users_list'].push(user);
+    return user;
+}
+
+const deleteUser = (user) => {
+    users['users_list'].delete(user);
+    return user;
+}
+
 app.get('/users', (req, res) => {
     const name = req.query.name;
-    if (name != undefined){
+    const job = req.query.job;
+    if(name != undefined && job != undefined){
+        let result = findUserByNameJob(name, job);
+        result = {users_list: result};
+        res.send(result);
+    }
+    else if (name != undefined){
         let result = findUserByName(name);
         result = {users_list: result};
         res.send(result);
@@ -72,4 +93,16 @@ app.get('/users/:id', (req, res) => {
     } else {
         res.send(result);
     }
+});
+
+app.post('/users', (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.send();
+});
+
+app.delete('/users', (req, res) => {
+    const userToDelete = req.body;
+    deleteUser(userToDelete);
+    res.send();
 });
