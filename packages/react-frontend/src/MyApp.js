@@ -28,12 +28,19 @@ function MyApp() {
         const updated = characters.filter((character, i) => {
             return i !== index
         });
-        setCharacters(updated);
+
+        const charID = characters[index].id;
+        //console.log("character id: ", charID)
+        const promise = fetch(`http://localhost:8000/users/${charID}`, {
+            method: "DELETE",
+        }).then(result => {if(result && result.status === 204) setCharacters(updated)});
+        //console.log("after setCharacters")
+        return promise;
     }
 
     function updateList(person) {
         postUser(person)
-            .then(() => setCharacters([...characters, person]))
+            .then(result => {if(result && result.status === 201) setCharacters([...characters, person])})
             .catch((error) => {
                 console.log(error);
             })
@@ -45,7 +52,7 @@ function MyApp() {
     }
 
     function postUser(person) {
-        const promise = fetch("Http://localhost:8000/users", {
+        const promise = fetch("http://localhost:8000/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
