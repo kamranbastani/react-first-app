@@ -2,10 +2,9 @@
   "name": "express-backend",
   "version": "1.0.0",
   "description": "",
+  "main": "module.js",
   "type": "module",
-  "main": "backend.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon backend.js",
     "start": "node backend.js"
   },
@@ -15,3 +14,4 @@
     "cors": "^2.8.5"
   }
 }
+
